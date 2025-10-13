@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/libs/gdextension/terrainer/**",
+                "${workspaceFolder}/libs/gdextension/godot-cpp/gen/include/**",
+                "${workspaceFolder}/libs/gdextension/godot-cpp/include/**",
+                "${workspaceFolder}/libs/gdextension/godot-cpp/gdextension/**"
+            ],
+            "defines": [
+                "TERRAINER_GDEXTENSION",
+                "TOOLS_ENABLED",
+                "DEBUG_ENABLED",
+                "DEV_ENABLED"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

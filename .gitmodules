@@ -1,0 +1,6 @@
+[submodule "libs/gdextension/terrainer"]
+	path = libs/gdextension/terrainer
+	url = git@github.com:TopScales/terrainer.git
+[submodule "libs/gdextension/godot-cpp"]
+	path = libs/gdextension/godot-cpp
+	url = https://github.com/godotengine/godot-cpp.git
