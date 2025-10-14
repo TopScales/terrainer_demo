@@ -184,6 +184,7 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.7071068, 0.18301271, -0.6830127, 0, 0.9659259, 0.25881907, 0.7071068, 0.18301271, -0.6830127, 0, 2, 0)
 script = ExtResource("2_avahw")
+speed = 12.0
 velocity_decay_time = 0.2
 rotation_sensitivity = 0.004
 

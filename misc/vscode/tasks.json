@@ -50,6 +50,40 @@
                     "GODOT_BINDINGS": "${workspaceFolder}/libs/gdextension/godot-cpp"
                 }
             }
+        },
+        {
+            "label": "Build Terrainer Editor (GDExtension)",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "-j12",
+                "platform=windows",
+                "target=editor",
+                "bits=64"
+            ],
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceFolder}/libs/gdextension/terrainer",
+                "env": {
+                    "BIN_OUTPUT": "${workspaceFolder}/libs",
+                    "GODOT_BINDINGS": "${workspaceFolder}/libs/gdextension/godot-cpp"
+                }
+            }
+        },
+        {
+            "label": "Build All (GDExtension)",
+            "dependsOn": [
+                "Build Terrainer Debug (GDExtension)",
+                "Build Terrainer Release (GDExtension)",
+                "Build Terrainer Editor (GDExtension)"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
         }
     ]
 }
