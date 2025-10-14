@@ -24,5 +24,7 @@ __pycache__/
 
 # GDExtension specific ignores
 ~*.dll
+*.exp
+*.lib
 
 tmp/

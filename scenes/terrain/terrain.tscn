@@ -1,0 +1,102 @@
+[gd_scene load_steps=12 format=3 uid="uid://duktcgx7mkp5t"]
+
+[ext_resource type="Script" uid="uid://rlgo1qmv85y2" path="res://scenes/terrain/terrain.gd" id="1_206su"]
+[ext_resource type="Script" uid="uid://bua00p61e3otv" path="res://scenes/terrain/free_camera.gd" id="2_avahw"]
+[ext_resource type="Shader" uid="uid://dkh2w7viagpti" path="res://scenes/terrain/chunks.gdshader" id="3_avahw"]
+[ext_resource type="Script" uid="uid://bpghy63lqu42w" path="res://scenes/terrain/info_display.gd" id="4_n7k1k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7k1k"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06469653, 0.064696535, 0.06469648, 0.32941177)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_206su"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_0u6kl"]
+sky_material = SubResource("ProceduralSkyMaterial_206su")
+
+[sub_resource type="Environment" id="Environment_avahw"]
+background_mode = 2
+sky = SubResource("Sky_0u6kl")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Image" id="Image_uqx3c"]
+data = {
+"data": PackedByteArray(225, 65, 237, 41, 105, 68, 237, 37, 37, 69, 237, 33, 131, 69, 237, 29, 178, 69, 237, 25, 202, 69, 237, 21),
+"format": "RGHalf",
+"height": 1,
+"mipmaps": false,
+"width": 6
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_iqhxt"]
+image = SubResource("Image_uqx3c")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_avahw"]
+render_priority = 0
+shader = ExtResource("3_avahw")
+shader_parameter/morph_data = SubResource("ImageTexture_iqhxt")
+shader_parameter/grid_const = Vector2(8, 0.125)
+
+[node name="Terrain" type="Node3D"]
+script = ExtResource("1_206su")
+
+[node name="Control" type="PanelContainer" parent="."]
+offset_right = 184.0
+offset_bottom = 251.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n7k1k")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" node_paths=PackedStringArray("terrain")]
+layout_mode = 2
+theme_override_constants/separation = 12
+script = ExtResource("4_n7k1k")
+terrain = NodePath("../../TTerrain")
+
+[node name="TagLabel" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+text = "FPS:
+Objects:
+Rendered objects:
+Memory:
+Draw calls:
+Video Memory:
+LOD levels:
+Displayed Chunks:
+LOD0 Chunks:"
+horizontal_alignment = 2
+
+[node name="ValuesLabel" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+text = "0
+0
+0
+0
+0
+0
+0
+0
+0"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_avahw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.7071068, 0.18301271, -0.6830127, 0, 0.9659259, 0.25881907, 0.7071068, 0.18301271, -0.6830127, 0, 2, 0)
+script = ExtResource("2_avahw")
+velocity_decay_time = 0.2
+rotation_sensitivity = 0.004
+
+[node name="TTerrain" type="TTerrain" parent="."]
+block_size = 4
+world_blocks = Vector2i(2, 2)
+material = SubResource("ShaderMaterial_avahw")
+lod_detailed_chunks_radius = 2
