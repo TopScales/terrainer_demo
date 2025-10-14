@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://duktcgx7mkp5t"]
 
-[ext_resource type="Script" uid="uid://rlgo1qmv85y2" path="res://scenes/terrain/terrain.gd" id="1_206su"]
 [ext_resource type="Script" uid="uid://bua00p61e3otv" path="res://scenes/terrain/free_camera.gd" id="2_avahw"]
+[ext_resource type="Script" uid="uid://dg4qunk5futb2" path="res://scenes/terrain/settings.gd" id="2_uqx3c"]
 [ext_resource type="Shader" uid="uid://dkh2w7viagpti" path="res://scenes/terrain/chunks.gdshader" id="3_avahw"]
 [ext_resource type="Script" uid="uid://bpghy63lqu42w" path="res://scenes/terrain/info_display.gd" id="4_n7k1k"]
 
@@ -27,37 +27,46 @@ glow_enabled = true
 
 [sub_resource type="Image" id="Image_uqx3c"]
 data = {
-"data": PackedByteArray(225, 65, 237, 41, 105, 68, 237, 37, 37, 69, 237, 33, 131, 69, 237, 29, 178, 69, 237, 25, 202, 69, 237, 21),
+"data": PackedByteArray(225, 65, 249, 45, 105, 68, 249, 41, 37, 69, 249, 37, 131, 69, 249, 33, 178, 69, 249, 29, 202, 69, 249, 25, 214, 69, 249, 21),
 "format": "RGHalf",
 "height": 1,
 "mipmaps": false,
-"width": 6
+"width": 7
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_iqhxt"]
+[sub_resource type="ImageTexture" id="ImageTexture_ine53"]
 image = SubResource("Image_uqx3c")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_avahw"]
 render_priority = 0
 shader = ExtResource("3_avahw")
-shader_parameter/morph_data = SubResource("ImageTexture_iqhxt")
+shader_parameter/morph_data = SubResource("ImageTexture_ine53")
 shader_parameter/grid_const = Vector2(8, 0.125)
 
 [node name="Terrain" type="Node3D"]
-script = ExtResource("1_206su")
 
-[node name="Control" type="PanelContainer" parent="."]
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Info" type="PanelContainer" parent="GUI"]
+layout_mode = 0
 offset_right = 184.0
 offset_bottom = 251.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_n7k1k")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control" node_paths=PackedStringArray("terrain")]
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Info" node_paths=PackedStringArray("terrain")]
 layout_mode = 2
 theme_override_constants/separation = 12
 script = ExtResource("4_n7k1k")
-terrain = NodePath("../../TTerrain")
+terrain = NodePath("../../../TTerrain")
 
-[node name="TagLabel" type="Label" parent="Control/HBoxContainer"]
+[node name="TagLabel" type="Label" parent="GUI/Info/HBoxContainer"]
 layout_mode = 2
 text = "FPS:
 Objects:
@@ -70,7 +79,7 @@ Displayed Chunks:
 LOD0 Chunks:"
 horizontal_alignment = 2
 
-[node name="ValuesLabel" type="Label" parent="Control/HBoxContainer"]
+[node name="ValuesLabel" type="Label" parent="GUI/Info/HBoxContainer"]
 layout_mode = 2
 text = "0
 0
@@ -81,6 +90,89 @@ text = "0
 0
 0
 0"
+
+[node name="Settings" type="Button" parent="GUI" node_paths=PackedStringArray("terrain", "camera", "chunk_size_spin", "detailed_radius_spin", "far_slider", "debug_boxes_checkbox")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_bottom = 31.0
+grow_horizontal = 0
+toggle_mode = true
+text = "Settings
+"
+script = ExtResource("2_uqx3c")
+terrain = NodePath("../../TTerrain")
+camera = NodePath("../../Camera3D")
+chunk_size_spin = NodePath("PanelContainer/HBoxContainer/Controls/ChunkSizeSpinBox")
+detailed_radius_spin = NodePath("PanelContainer/HBoxContainer/Controls/DetailedRadiusSpinBox")
+far_slider = NodePath("PanelContainer/HBoxContainer/Controls/FarSlider")
+debug_boxes_checkbox = NodePath("PanelContainer/HBoxContainer/Controls/DebugBoxesCheckBox")
+
+[node name="PanelContainer" type="PanelContainer" parent="GUI/Settings"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 1.1612903
+anchor_right = 0.98571426
+anchor_bottom = 1.8064516
+offset_left = -273.0
+offset_bottom = 140.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n7k1k")
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Settings/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="Tags" type="VBoxContainer" parent="GUI/Settings/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="GUI/Settings/PanelContainer/HBoxContainer/Tags"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Chunk Size
+Detailed Chunks Radius
+Camera Far Distance
+Show Debug Boxes"
+horizontal_alignment = 2
+vertical_alignment = 3
+
+[node name="Controls" type="VBoxContainer" parent="GUI/Settings/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ChunkSizeSpinBox" type="SpinBox" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = 4.0
+max_value = 256.0
+value = 8.0
+
+[node name="DetailedRadiusSpinBox" type="SpinBox" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = 2.0
+max_value = 16.0
+value = 4.0
+
+[node name="FarSlider" type="HSlider" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = 20.0
+max_value = 8000.0
+value = 4000.0
+
+[node name="DebugBoxesCheckBox" type="CheckBox" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_avahw")
@@ -100,3 +192,9 @@ block_size = 4
 world_blocks = Vector2i(2, 2)
 material = SubResource("ShaderMaterial_avahw")
 lod_detailed_chunks_radius = 2
+
+[connection signal="toggled" from="GUI/Settings" to="GUI/Settings" method="_on_toggled"]
+[connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/ChunkSizeSpinBox" to="GUI/Settings" method="_on_chunk_size_spin_box_value_changed"]
+[connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/DetailedRadiusSpinBox" to="GUI/Settings" method="_on_detailed_radius_spin_box_value_changed"]
+[connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/FarSlider" to="GUI/Settings" method="_on_far_slider_value_changed"]
+[connection signal="toggled" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/DebugBoxesCheckBox" to="GUI/Settings" method="_on_debug_boxes_check_box_toggled"]
