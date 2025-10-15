@@ -23,6 +23,7 @@ func _process(_delta: float) -> void:
 			var string: String = "\nLOD%d Chunks:" % i
 			tags_text += string
 		tags.text = tags_text
+		prev_lods = lods
 
 	var values_text: String = "%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d" % [fps, objects, rendered_objects, memory, draw_calls, vmemory, lods, chunks]
 
