@@ -5,6 +5,7 @@ extends Button
 @export var chunk_size_spin: SpinBox
 @export var detailed_radius_spin: SpinBox
 @export var far_slider: HSlider
+@export var ratio_slider: HSlider
 @export var debug_boxes_checkbox: CheckBox
 
 
@@ -12,6 +13,7 @@ func _ready() -> void:
 	chunk_size_spin.value = terrain.chunk_size
 	detailed_radius_spin.value = terrain.lod_detailed_chunks_radius
 	far_slider.value = camera.far
+	ratio_slider.value = terrain.lod_distance_ratio
 	debug_boxes_checkbox.button_pressed = terrain.debug_nodes_aabb_enabled
 
 
@@ -35,3 +37,7 @@ func _on_far_slider_value_changed(value: float) -> void:
 
 func _on_debug_boxes_check_box_toggled(toggled_on: bool) -> void:
 	terrain.debug_nodes_aabb_enabled = toggled_on
+
+
+func _on_ratio_slider_value_changed(value: float) -> void:
+	terrain.lod_distance_ratio = value

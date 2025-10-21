@@ -27,7 +27,7 @@ glow_enabled = true
 
 [sub_resource type="Image" id="Image_uqx3c"]
 data = {
-"data": PackedByteArray(225, 65, 249, 45, 105, 68, 249, 41, 37, 69, 249, 37, 131, 69, 249, 33, 178, 69, 249, 29, 202, 69, 249, 25, 214, 69, 249, 21),
+"data": PackedByteArray(225, 65, 230, 44, 105, 68, 230, 40, 37, 69, 230, 36, 131, 69, 230, 32, 178, 69, 230, 28, 202, 69, 230, 24, 113, 71, 158, 23),
 "format": "RGHalf",
 "height": 1,
 "mipmaps": false,
@@ -91,7 +91,7 @@ text = "0
 0
 0"
 
-[node name="Settings" type="Button" parent="GUI" node_paths=PackedStringArray("terrain", "camera", "chunk_size_spin", "detailed_radius_spin", "far_slider", "debug_boxes_checkbox")]
+[node name="Settings" type="Button" parent="GUI" node_paths=PackedStringArray("terrain", "camera", "chunk_size_spin", "detailed_radius_spin", "far_slider", "ratio_slider", "debug_boxes_checkbox")]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -108,20 +108,20 @@ camera = NodePath("../../Camera3D")
 chunk_size_spin = NodePath("PanelContainer/HBoxContainer/Controls/ChunkSizeSpinBox")
 detailed_radius_spin = NodePath("PanelContainer/HBoxContainer/Controls/DetailedRadiusSpinBox")
 far_slider = NodePath("PanelContainer/HBoxContainer/Controls/FarSlider")
+ratio_slider = NodePath("PanelContainer/HBoxContainer/Controls/RatioSlider")
 debug_boxes_checkbox = NodePath("PanelContainer/HBoxContainer/Controls/DebugBoxesCheckBox")
 
 [node name="PanelContainer" type="PanelContainer" parent="GUI/Settings"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.7
-anchor_top = 1.1612903
-anchor_right = 0.98571426
-anchor_bottom = 1.8064516
-offset_left = -273.0
-offset_bottom = 140.0
+anchor_left = 1.0
+anchor_top = 1.2258065
+anchor_right = 1.0
+anchor_bottom = 1.2258065
+offset_left = -297.0
+offset_bottom = 196.0
 grow_horizontal = 0
-grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_n7k1k")
 metadata/_edit_use_anchors_ = true
 
@@ -141,6 +141,7 @@ size_flags_vertical = 3
 text = "Chunk Size
 Detailed Chunks Radius
 Camera Far Distance
+LOD Distance Ratio
 Show Debug Boxes"
 horizontal_alignment = 2
 vertical_alignment = 3
@@ -158,7 +159,7 @@ value = 8.0
 [node name="DetailedRadiusSpinBox" type="SpinBox" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-min_value = 2.0
+min_value = 1.0
 max_value = 16.0
 value = 4.0
 
@@ -169,6 +170,17 @@ size_flags_vertical = 1
 min_value = 20.0
 max_value = 8000.0
 value = 4000.0
+exp_edit = true
+
+[node name="RatioSlider" type="HSlider" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = 1.5
+max_value = 3.0
+step = 0.1
+value = 2.0
+tick_count = 4
 
 [node name="DebugBoxesCheckBox" type="CheckBox" parent="GUI/Settings/PanelContainer/HBoxContainer/Controls"]
 custom_minimum_size = Vector2(0, 32)
@@ -190,7 +202,7 @@ rotation_sensitivity = 0.004
 
 [node name="TTerrain" type="TTerrain" parent="."]
 block_size = 4
-world_blocks = Vector2i(2, 2)
+world_blocks = Vector2i(10, 10)
 material = SubResource("ShaderMaterial_avahw")
 lod_detailed_chunks_radius = 2
 
@@ -198,4 +210,5 @@ lod_detailed_chunks_radius = 2
 [connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/ChunkSizeSpinBox" to="GUI/Settings" method="_on_chunk_size_spin_box_value_changed"]
 [connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/DetailedRadiusSpinBox" to="GUI/Settings" method="_on_detailed_radius_spin_box_value_changed"]
 [connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/FarSlider" to="GUI/Settings" method="_on_far_slider_value_changed"]
+[connection signal="value_changed" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/RatioSlider" to="GUI/Settings" method="_on_ratio_slider_value_changed"]
 [connection signal="toggled" from="GUI/Settings/PanelContainer/HBoxContainer/Controls/DebugBoxesCheckBox" to="GUI/Settings" method="_on_debug_boxes_check_box_toggled"]
